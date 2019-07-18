@@ -7,6 +7,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.models.Users;
@@ -17,6 +19,9 @@ public class UserDaoImpl implements UserDao{
 
 	@PersistenceContext
     private EntityManager entityManager;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -39,6 +44,7 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public void addUser(Users user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		entityManager.persist(user);
 	}
 
