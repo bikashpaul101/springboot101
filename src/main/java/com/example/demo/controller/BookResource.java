@@ -33,9 +33,9 @@ public class BookResource {
 	private BooksService booksService;
 	
 @RequestMapping(path = "/add", method = RequestMethod.POST)
-public ResponseEntity<Book>save(WebRequest request,@RequestBody Book book) {
+public ResponseEntity<String> save(WebRequest request,@RequestBody Book book) {
 	bookRepository.save(book);
-	return ResponseEntity.ok().eTag("\"" + book.getVersion() + "\"").build();
+	return ResponseEntity.ok().eTag("\"" + book.getVersion() + "\"").body("success");
 }
 
 @RequestMapping(path = "/getAll", method = RequestMethod.GET)
@@ -50,13 +50,13 @@ public ResponseEntity<List<Book>> getAll() {
 }
 
 @RequestMapping(path = "/get/{id}", method = RequestMethod.GET)
-public ResponseEntity<Book> getByIdentifier(@PathVariable("id") Long id) {
+public Book getByIdentifier(@PathVariable("id") Long id) {
 	Optional<Book> book=bookRepository.findById(id);
 	if(!book.isPresent()) {
-		return ResponseEntity.notFound().build();
+		return book.get();
 	}
 	else {
-		return ResponseEntity.ok().eTag(book.get().getVersion().toString()).body(book.get());
+		return null;
 	}
 }
 

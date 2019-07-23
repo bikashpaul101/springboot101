@@ -25,7 +25,7 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity httpsecurity) throws Exception{
     	httpsecurity.csrf().disable().
         authorizeRequests()
-        .antMatchers(HttpMethod.POST, SIGN_UP_URL)
+        .antMatchers("/**")
         .permitAll()
         .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
         .permitAll()

@@ -14,9 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.demo.dao.BookDaoImpl;
 import com.example.demo.models.Book;
 import com.example.demo.services.BooksService; 
+
 @SpringBootTest
 public class DemoApplicationTests {
-
+// resource https://www.mkyong.com/spring-boot/spring-boot-junit-5-mockito/
 @Autowired
 BooksService booksService;
 
@@ -34,7 +35,7 @@ BookDaoImpl booksDao;
 		books.add(book);
 		List<Book> booksActual=new ArrayList();
 		booksActual=booksService.getAllBooks();
-		assertThat(booksActual,sameBeanAs(books));
+		assertThat(booksActual,sameBeanAs(books).ignoring("identifier").ignoring("version"));
 	}
 	
 	@Test
@@ -45,8 +46,8 @@ BookDaoImpl booksDao;
 		book.setDescription("string");
 		book.setIsbn("string");
 		book.setTitle("string");
-		Optional<Book> actualBook=booksDao.findById(2l);
-		assertThat(actualBook.get(),sameBeanAs(book));
+		Optional<Book> actualBook=booksDao.findById(3l);
+		assertThat(actualBook.get(),sameBeanAs(book).ignoring("identifier").ignoring("version"));
 	}
 
 	@Test
@@ -58,6 +59,6 @@ BookDaoImpl booksDao;
 		book.setIsbn("string");
 		book.setTitle("string");
 		Book actualBook=booksDao.getBookByISBN("string");
-		assertThat(actualBook,sameBeanAs(book));
+		assertThat(actualBook,sameBeanAs(book).ignoring("identifier").ignoring("version"));
 	}
 }
