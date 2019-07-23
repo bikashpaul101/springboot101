@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.example.demo.dao.BookDaoImpl;
 import com.example.demo.models.Book;
+import com.example.demo.services.BooksService;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -28,6 +29,9 @@ public class BookResource {
 	@Autowired
 	private BookDaoImpl bookRepository;
 	
+	@Autowired
+	private BooksService booksService;
+	
 @RequestMapping(path = "/add", method = RequestMethod.POST)
 public ResponseEntity<Book>save(WebRequest request,@RequestBody Book book) {
 	bookRepository.save(book);
@@ -36,13 +40,13 @@ public ResponseEntity<Book>save(WebRequest request,@RequestBody Book book) {
 
 @RequestMapping(path = "/getAll", method = RequestMethod.GET)
 public ResponseEntity<List<Book>> getAll() {
-	Iterable<Book> books=bookRepository.findAll();
-	Iterator itr=books.iterator();
-	List<Book> bookList=new ArrayList();
-	while(itr.hasNext()) {
-		bookList.add((Book) itr.next());
-	}
-	return new ResponseEntity<List<Book>>(bookList, HttpStatus.OK);
+//	Iterable<Book> books=bookRepository.findAll();
+//	Iterator itr=books.iterator();
+//	List<Book> bookList=new ArrayList();
+//	while(itr.hasNext()) {
+//		bookList.add((Book) itr.next());
+//	}
+	return new ResponseEntity<List<Book>>(booksService.getAllBooks(), HttpStatus.OK);
 }
 
 @RequestMapping(path = "/get/{id}", method = RequestMethod.GET)
